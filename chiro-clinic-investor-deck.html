@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHIRO CLINIC - Investor Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --accent: #2A5C3F;
+  --accent-light: #E8F0EB;
+  --accent-warm: #D4A853;
+  --border: #E8E6E1;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --slide-max: 1100px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.deck { width: 100%; height: 100vh; position: relative; overflow: hidden; }
+
+.slide {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 80px; opacity: 0; transform: translateY(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none; overflow-y: auto;
+}
+.slide.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+.slide-inner { width: 100%; max-width: var(--slide-max); margin: 0 auto; }
+
+.slide-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+h1 { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1.15; font-weight: 400; margin-bottom: 20px; color: var(--text); }
+h2 { font-family: 'DM Serif Display', serif; font-size: 38px; line-height: 1.2; font-weight: 400; margin-bottom: 16px; }
+.subtitle { font-size: 18px; line-height: 1.65; color: var(--text-secondary); max-width: 640px; margin-bottom: 40px; }
+
+.metrics { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 32px; }
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; min-width: 180px; flex: 1; box-shadow: var(--card-shadow); }
+.metric-value { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); margin-bottom: 4px; }
+.metric-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; box-shadow: var(--card-shadow); }
+.card-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--text); }
+.card-text { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+.card-number { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); margin-bottom: 12px; }
+
+.feature-list { list-style: none; padding: 0; }
+.feature-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; display: flex; align-items: center; gap: 12px; color: var(--text-secondary); }
+.feature-list li:last-child { border-bottom: none; }
+.feature-list li::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table th { text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); padding: 12px 16px; border-bottom: 2px solid var(--border); }
+.data-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .highlight { color: var(--accent); font-weight: 600; }
+
+.bar-chart { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.bar-row { display: flex; align-items: center; gap: 14px; }
+.bar-label { width: 100px; font-size: 13px; font-weight: 500; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 28px; background: var(--accent-light); border-radius: 6px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; background: var(--accent); border-radius: 6px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; }
+.bar-fill span { font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; }
+
+.highlight-box { background: var(--accent); color: #fff; border-radius: 14px; padding: 32px; margin-top: 24px; }
+.highlight-box h3 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; margin-bottom: 8px; }
+.highlight-box p { font-size: 15px; opacity: 0.85; line-height: 1.5; }
+
+.tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; margin-right: 8px; margin-bottom: 8px; }
+.tag.gold { background: #FDF5E3; color: #A07C28; }
+
+.nav { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; padding: 10px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); z-index: 100; }
+.nav-btn { width: 36px; height: 36px; border: none; background: var(--accent-light); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; color: var(--accent); }
+.nav-btn:hover { background: var(--accent); color: #fff; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.nav-btn:disabled:hover { background: var(--accent-light); color: var(--accent); }
+.nav-counter { font-size: 13px; font-weight: 500; color: var(--text-secondary); min-width: 50px; text-align: center; }
+
+.progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 100; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+
+.title-slide .slide-inner { text-align: left; }
+.title-slide h1 { font-size: 56px; max-width: 700px; }
+.title-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; }
+.closing-slide .slide-inner { text-align: center; }
+.closing-slide h1 { max-width: 700px; margin: 0 auto 20px; }
+
+.option-card { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 32px; transition: border-color 0.2s; }
+.option-card:hover { border-color: var(--accent); }
+.option-card .option-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-warm); margin-bottom: 12px; }
+
+@media (max-width: 900px) {
+  .slide { padding: 40px 28px; }
+  h1 { font-size: 36px; }
+  h2 { font-size: 28px; }
+  .title-slide h1 { font-size: 38px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .metrics { flex-direction: column; }
+  .metric { min-width: auto; }
+}
+
+.slide.active .stagger > * { opacity: 0; transform: translateY(16px); animation: fadeUp 0.45s ease forwards; }
+.slide.active .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.slide.active .stagger > *:nth-child(2) { animation-delay: 0.12s; }
+.slide.active .stagger > *:nth-child(3) { animation-delay: 0.19s; }
+.slide.active .stagger > *:nth-child(4) { animation-delay: 0.26s; }
+.slide.active .stagger > *:nth-child(5) { animation-delay: 0.33s; }
+.slide.active .stagger > *:nth-child(6) { animation-delay: 0.4s; }
+.slide.active .stagger > *:nth-child(7) { animation-delay: 0.47s; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide title-slide active">
+  <div class="slide-inner stagger">
+    <div class="title-logo">Chiro Clinic</div>
+    <h1>Multiodborové centrum + rehab gym pod jednou strechou</h1>
+    <p class="subtitle">Projekt spája fyzioterapiu, chiropraxiu a aktívnu rehabilitáciu do jedného systému. Gym zóna zvyšuje efektivitu liečby aj výnos na klienta.</p>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">530k &euro;</div>
+        <div class="metric-label">Investícia</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">5+1</div>
+        <div class="metric-label">Miestností + gym</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">Brno</div>
+        <div class="metric-label">Pilotná lokalita</div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:32px;">
+      <p>Nie startup, ale reálny zdravotnícky biznis s dopytom a jasnou ekonomikou.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: PROBLÉM -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Problém</div>
+    <h2>Trh je rozbitý a neefektívny</h2>
+    <p class="subtitle">Klient dnes rieši bolesti cez viac poskytovateľov a čaká na termíny. To znižuje kvalitu liečby aj ekonomiku služieb.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-number">1</div>
+        <div class="card-title">Dlhé čakanie</div>
+        <div class="card-text">Fyzio termíny sú preplnené. Klient čaká dni až týždne na prvú návštevu.</div>
+      </div>
+      <div class="card">
+        <div class="card-number">2</div>
+        <div class="card-title">Roztrieštenosť služieb</div>
+        <div class="card-text">Fyzio, masáž, ortopéd - každý inde. Nízky komfort, slabý cross-sell medzi službami.</div>
+      </div>
+      <div class="card">
+        <div class="card-number">3</div>
+        <div class="card-title">Silný dopyt</div>
+        <div class="card-text">Sedavý lifestyle, bolesť chrbtice, starnutie populácie. Potreba opakovaných návštev rastie.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: RIEŠENIE -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Riešenie</div>
+    <h2>Od terapie k aktívnemu pohybu</h2>
+    <p class="subtitle">Klient neprechádza len terapiou, ale aj riadeným cvičením. To zvyšuje úspešnosť liečby a počet návštev.</p>
+    <div class="grid-2">
+      <div>
+        <ul class="feature-list">
+          <li>Diagnostika, terapia aj regenerácia na jednom mieste</li>
+          <li>Gym zóna - predĺženie fyzioterapie, nie fitness</li>
+          <li>Premium 1:1 alebo semi-private 1:2 model</li>
+          <li>7 dní v týždni</li>
+          <li>Vyšší LTV klienta cez cross-sell</li>
+        </ul>
+      </div>
+      <div class="card" style="background: var(--accent-light); border-color: transparent;">
+        <div class="card-title" style="color: var(--accent);">Strategická výhoda</div>
+        <div class="card-text">Klient prechádza z terapie do aktívnej fázy bez odchodu inde. To zvyšuje retenciu, výsledky aj lifetime value.</div>
+        <div style="margin-top: 16px;">
+          <span class="tag">Viac návštev</span>
+          <span class="tag">Vyšší LTV</span>
+          <span class="tag">Vyššia spokojnosť</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: SLUŽBY -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Služby</div>
+    <h2>Rozšírený mix služieb = stabilita + marža</h2>
+    <p class="subtitle">Fyzio tvorí základ obratu, prístroje zvyšujú maržu. Gym dopĺňa o aktívnu rehabilitáciu a zvyšuje retenciu.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">Fyzioterapia</div>
+        <div class="card-text">Základný pilier. Hlavný driver obratu a klientskej základne.</div>
+        <span class="tag" style="margin-top:12px;">Core</span>
+      </div>
+      <div class="card">
+        <div class="card-title">Chiropraxia</div>
+        <div class="card-text">Doplnková služba s vysokou pridanou hodnotou a lojalitou klientov.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Masáže</div>
+        <div class="card-text">Stabilný cashflow, nízka náročnosť. Doplnkový revenue stream.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rázová vlna / Laser</div>
+        <div class="card-text">Prístroje s vysokou maržou. Rýchle sloty, minimálny náklad na operátora.</div>
+        <span class="tag gold" style="margin-top:12px;">Vysoká marža</span>
+      </div>
+      <div class="card">
+        <div class="card-title">Ortopéd</div>
+        <div class="card-text">1x týždenne. Zvyšuje dôveryhodnosť centra a klientsky funnel.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rehab gym</div>
+        <div class="card-text">Aktívna rehabilitácia. Premium 1:1 alebo 1:2, predlžuje liečebný proces.</div>
+        <span class="tag" style="margin-top:12px;">Nové</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: OPERATING MODEL -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Operating model</div>
+    <h2>Kapacita riadená miestnosťami</h2>
+    <p class="subtitle">Výkon neobmedzuje počet ľudí, ale počet miestností. To umožňuje presné riadenie rastu a efektivity.</p>
+    <div class="grid-2">
+      <div>
+        <table class="data-table">
+          <thead><tr><th>Miestnosť</th><th>Funkcia</th></tr></thead>
+          <tbody>
+            <tr><td>M1 - M3</td><td>Fyzioterapia</td></tr>
+            <tr><td>M4</td><td>Chiropraxia / prístroj</td></tr>
+            <tr><td>M5</td><td>Masáž / fyzio</td></tr>
+            <tr><td class="highlight">M6 - Gym</td><td class="highlight">Rehab gym (1:1 / 1:2)</td></tr>
+          </tbody>
+        </table>
+        <div class="metrics" style="margin-top: 24px;">
+          <div class="metric">
+            <div class="metric-value">65-70</div>
+            <div class="metric-label">Room-hours / deň</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3 dni</div>
+            <div class="metric-label">Founder / týždeň</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="background: var(--accent-light); border-color: transparent;">
+          <div class="card-title" style="color: var(--accent);">Prečo gym ako 6. miestnosť?</div>
+          <div class="card-text" style="margin-bottom: 12px;">Gym funguje ako flexibilná miestnosť pre fyzio alebo cvičenie. Najlacnejší spôsob ako zvýšiť kapacitu bez veľkého CAPEX.</div>
+          <div class="card-text"><strong>Primárny mód:</strong> 1 klient (premium)</div>
+          <div class="card-text"><strong>Sekundárny mód:</strong> 2 klienti (vyšší výnos)</div>
+        </div>
+        <div class="highlight-box" style="margin-top: 16px;">
+          <p>Každá miestnosť je samostatný revenue driver.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: INVESTÍCIA -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Investícia</div>
+    <h2>Kapitál ide do aktíva</h2>
+    <p class="subtitle">Väčšina investície smeruje do nehnuteľnosti. Znižuje sa riziko oproti klasickému nájmu.</p>
+    <div class="grid-2">
+      <div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label">Nehnuteľnosť</div>
+            <div class="bar-track"><div class="bar-fill" style="width: 75.5%"><span>400k &euro;</span></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Rekonštrukcia</div>
+            <div class="bar-track"><div class="bar-fill" style="width: 15.1%"><span>80k &euro;</span></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Technológie</div>
+            <div class="bar-track"><div class="bar-fill" style="width: 9.4%"><span>50k &euro;</span></div></div>
+          </div>
+        </div>
+        <div class="metrics" style="margin-top: 32px;">
+          <div class="metric">
+            <div class="metric-value">530k &euro;</div>
+            <div class="metric-label">Celková investícia</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">Prečo nehnuteľnosť?</div>
+          <div class="card-text">Investor nekupuje len prevádzku, ale aj reálne krytie. Kapitál je viazaný v aktíve, ktoré si drží hodnotu.</div>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-title">Nižšie riziko</div>
+          <div class="card-text">Oproti čistému nájmu odpadajú mesačné náklady na prenájom. V prípade neúspešného scenára zostáva hodnota nehnuteľnosti.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: UNIT ECONOMICS -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Unit economics</div>
+    <h2>Silná ekonomika modelu</h2>
+    <p class="subtitle">Variabilné náklady sú kontrolované a fixy nízke. Gym zvyšuje výnos na hodinu o 10-20 %.</p>
+    <div class="grid-3">
+      <div class="metric">
+        <div class="metric-value">~98k &euro;</div>
+        <div class="metric-label">Max mesačný revenue (100 %)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">~45 %</div>
+        <div class="metric-label">Variabilné náklady</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">~7-8k &euro;</div>
+        <div class="metric-label">Fixné náklady / mesiac</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:32px;">
+      <div class="highlight-box">
+        <h3>Break-even: ~15 %</h3>
+        <p>Extrémne nízky break-even. Už pri 15 % vyťaženosti je prevádzka zisková.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Gym efekt na unit economics</div>
+        <div class="card-text">Cvičenie má nižšie náklady ako fyzio. Zvyšuje maržu a využitie času terapeuta. Možnosť 2 klientov na jeden slot.</div>
+        <div style="margin-top: 12px;">
+          <span class="tag gold">+10-20 % výnos/hodinu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: RAMP-UP -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Ramp-up plán</div>
+    <h2>Postupné zapĺňanie kapacity</h2>
+    <p class="subtitle">Konzervatívny nábeh. Gym urýchli ramp-up o 5-10 % - jednoduchšie služby sa predávajú rýchlejšie.</p>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Mes. 1-2</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 20%"><span>20 % - ~20k &euro;</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mes. 3-4</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 30%"><span>30 % - ~30k &euro;</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mes. 5-7</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 50%"><span>40-50 % - ~40-50k &euro;</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mes. 8-12</div>
+        <div class="bar-track"><div class="bar-fill" style="width: 70%"><span>60-70 % - ~60-70k &euro;</span></div></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="card">
+        <div class="card-title">Team scaling</div>
+        <div class="card-text">
+          Štart: 4 fyzioterapeuti<br>
+          3-6 mesiac: 6 fyzio<br>
+          6-9 mesiac: 8 fyzio<br>
+          9-12 mesiac: 10 fyzio
+        </div>
+      </div>
+      <div class="card" style="background: var(--accent-light); border-color: transparent;">
+        <div class="card-title" style="color: var(--accent);">Gym bonus</div>
+        <div class="card-text">Rýchlejšie zaplnenie kapacity. Lepšie využitie víkendov a hluchých hodín. Znižuje tlak na fyzio kapacitu.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: FINANCIE ROK 1 -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Financie - Rok 1</div>
+    <h2>Stabilizácia + vyšší early cashflow</h2>
+    <p class="subtitle">Prvý rok buduje klientelu a procesy. Gym generuje príjem už v skorých fázach.</p>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">480-600k &euro;</div>
+        <div class="metric-label">Ročný obrat</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">140-200k &euro;</div>
+        <div class="metric-label">EBITDA</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">60-70 %</div>
+        <div class="metric-label">Cieľová vyťaženosť</div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top: 32px;">
+      <h3>Konzervatívny základ</h3>
+      <p>Model je stavaný na prežitie, nie na optimistické scenáre. Nevyužitá kapacita je plánovaná.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: FINANCIE ROK 2 -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Financie - Rok 2</div>
+    <h2>Rast bez nového priestoru</h2>
+    <p class="subtitle">Zvýšenie cien, lepšie využitie času a mix služieb. Rast prebieha bez ďalšieho CAPEX.</p>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">950k-1.15M &euro;</div>
+        <div class="metric-label">Ročný obrat</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">400-550k &euro;</div>
+        <div class="metric-label">EBITDA</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">85-100k &euro;</div>
+        <div class="metric-label">Mesačný revenue</div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top: 32px;">
+      <div class="card">
+        <div class="card-number">1</div>
+        <div class="card-title">Zvýšenie cien</div>
+        <div class="card-text">Fyzio: 60 &#8594; 70 &euro;<br>Masáže: 48 &#8594; 55 &euro;</div>
+      </div>
+      <div class="card">
+        <div class="card-number">2</div>
+        <div class="card-title">Kratšie sloty</div>
+        <div class="card-text">45 min namiesto 60 min = +25 % kapacity</div>
+      </div>
+      <div class="card">
+        <div class="card-number">3</div>
+        <div class="card-title">Lepší mix</div>
+        <div class="card-text">Viac prístrojov (vyššia marža) + gym optimalizácia</div>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">Efekt: <strong style="color: var(--accent);">+27 % revenue uplift</strong> - najväčší rast pochádza z optimalizácie, nie expanzie.</p>
+  </div>
+</div>
+
+<!-- SLIDE 11: 24-MESAČNÝ VÝHĽAD -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">24-mesačný výhľad</div>
+    <h2>Kumulatívne výsledky</h2>
+    <p class="subtitle">Od break-even až po stabilnú prevádzku s vysokou maržou.</p>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">~730k &euro;</div>
+        <div class="metric-label">Kumulatívna EBITDA (24 mes.)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">~80 %</div>
+        <div class="metric-label">Steady state vyťaženosť</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">~15 %</div>
+        <div class="metric-label">Break-even</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 32px;">
+      <div class="card-title">Prevádzková logika</div>
+      <div class="card-text">Neexpanduješ hneď - optimalizuješ existujúci priestor. Vyšší výnos na miestnosť. Stabilný rast bez ďalšieho CAPEX. Gym zvyšuje throughput klientov aj maržu.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: INVESTOR PONUKA -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Investor ponuka</div>
+    <h2>Dve čisté možnosti</h2>
+    <p class="subtitle">Investor si volí medzi podielom a fixným výnosom. Model je flexibilný podľa preferencie rizika.</p>
+    <div class="grid-2">
+      <div class="option-card">
+        <div class="option-label">Možnosť A</div>
+        <h2 style="font-size: 28px;">Equity</h2>
+        <ul class="feature-list" style="margin-top: 16px;">
+          <li>Vklad: 530 000 &euro;</li>
+          <li>Podiel: 25-35 %</li>
+          <li>Exit: 3-5 rokov</li>
+          <li>Upside: expanzia do ďalších miest</li>
+        </ul>
+        <span class="tag" style="margin-top: 16px;">Rastový prístup</span>
+      </div>
+      <div class="option-card">
+        <div class="option-label">Možnosť B</div>
+        <h2 style="font-size: 28px;">Dlh</h2>
+        <ul class="feature-list" style="margin-top: 16px;">
+          <li>Pôžička: 530 000 &euro;</li>
+          <li>Úrok: 8-10 % ročne</li>
+          <li>Refinanc: 2 roky</li>
+          <li>Fallback: 5 rokov</li>
+        </ul>
+        <span class="tag gold" style="margin-top: 16px;">Konzervatívny prístup</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: ROADMAP -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Roadmap</div>
+    <h2>Najprv stabilita, potom expanzia</h2>
+    <p class="subtitle">Brno slúži ako pilot na overenie modelu. Expanzia prichádza až po potvrdení výsledkov.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-number" style="color: var(--accent);">Rok 1</div>
+        <div class="card-title">Pilot - Brno</div>
+        <div class="card-text">Postaviť prevádzku, stabilizovať klientelu, overiť model. Konzervatívny nábeh.</div>
+      </div>
+      <div class="card">
+        <div class="card-number" style="color: var(--accent);">Rok 2</div>
+        <div class="card-title">Optimalizácia</div>
+        <div class="card-text">Zvýšenie cien, kratšie sloty, lepší mix. Rast bez ďalšieho CAPEX.</div>
+      </div>
+      <div class="card">
+        <div class="card-number" style="color: var(--accent);">Rok 3+</div>
+        <div class="card-title">Expanzia</div>
+        <div class="card-text">Praha + ďalšie mestá. Replikovateľný model po validácii.</div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top: 32px;">
+      <p>Pravidlo: expanduje sa až po validácii modelu. Disciplína v začiatku = násobný rast.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: SILNÉ STRÁNKY + RIZIKÁ -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Analýza</div>
+    <h2>Silné stránky a riziká</h2>
+    <p class="subtitle">Transparentný pohľad na projekt pre informované investičné rozhodnutie.</p>
+    <div class="grid-2">
+      <div>
+        <h3 style="font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px;">Silné stránky</h3>
+        <ul class="feature-list">
+          <li>Real estate backing - kapitál v aktíve</li>
+          <li>Vysoký dopyt (pain market)</li>
+          <li>Opakované služby = stabilný revenue</li>
+          <li>Kontrolovaná kapacita - 6 zón</li>
+          <li>Rýchla návratnosť - nízky break-even</li>
+          <li>Gym zvyšuje výnos bez rastu nákladov</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-warm); margin-bottom: 16px;">Riziká</h3>
+        <ul class="feature-list">
+          <li>Závislosť na kvalite tímu</li>
+          <li>Lokálny trh (Brno)</li>
+          <li>Marketing na začiatku</li>
+          <li>Founder dependency (na začiatku)</li>
+          <li>Gym musí byť vedený odborne, nie ako fitness</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: PREČO INVESTOVAŤ -->
+<div class="slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label">Prečo investovať</div>
+    <h2>Silný cashflow + nízke riziko</h2>
+    <p class="subtitle">Projekt stojí na reálnom dopyte a opakovaných službách. Nehnuteľnosť poskytuje dodatočné zabezpečenie.</p>
+    <div class="grid-2" style="margin-bottom: 32px;">
+      <div class="card">
+        <div class="card-title">Investor nekupuje prevádzku</div>
+        <div class="card-text">Kupuje aktívum + cashflow. Nehnuteľnosť drží hodnotu, prevádzka generuje zisk. Nízky break-even minimalizuje riziko.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Škálovateľný model</div>
+        <div class="card-text">Po validácii pilotu v Brne je model replikovateľný do Prahy a ďalších miest. Kombinácia zdravotníctva a real estate.</div>
+      </div>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">~15 %</div>
+        <div class="metric-label">Break-even</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">40-50 %</div>
+        <div class="metric-label">EBITDA marža (Y2)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">~730k &euro;</div>
+        <div class="metric-label">Kumulatívna EBITDA (24m)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16: ZÁVER -->
+<div class="slide closing-slide">
+  <div class="slide-inner stagger">
+    <div class="slide-label" style="text-align: center;">Záver</div>
+    <h1>Najprv bezpečne postaviť Brno, potom škálovať model</h1>
+    <p class="subtitle" style="margin: 0 auto 40px; text-align: center; max-width: 600px;">Low-risk zdravotnícky cashflow model s real estate backingom a vysokým potenciálom škálovania po validácii pilotu.</p>
+    <div class="metrics" style="justify-content: center;">
+      <div class="metric" style="text-align: center;">
+        <div class="metric-value">530k &euro;</div>
+        <div class="metric-label">Investícia</div>
+      </div>
+      <div class="metric" style="text-align: center;">
+        <div class="metric-value">1 lokalita</div>
+        <div class="metric-label">Validácia</div>
+      </div>
+      <div class="metric" style="text-align: center;">
+        <div class="metric-value">2+ lokality</div>
+        <div class="metric-label">Rast</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 48px;">
+      <div class="title-logo">Chiro Clinic</div>
+      <p style="color: var(--text-secondary); font-size: 14px;">kontakt@chiro.sk</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <span class="nav-counter" id="navCounter">1 / 16</span>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+
+function showSlide(index) {
+  slides.forEach((s, i) => { s.classList.toggle('active', i === index); });
+  document.getElementById('navCounter').textContent = (index + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = index === 0;
+  document.getElementById('nextBtn').disabled = index === total - 1;
+  document.getElementById('progressFill').style.width = ((index + 1) / total * 100) + '%';
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next >= 0 && next < total) { current = next; showSlide(current); }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); navigate(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
+});
+
+showSlide(0);
+</script>
+</body>
+</html>
